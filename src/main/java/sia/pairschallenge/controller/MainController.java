@@ -23,6 +23,8 @@ public class MainController {
 
     @PostMapping
     public void createNewProduct() {
+        //save product
+        kafkaTemplate.send("product-events", "created new product");
     }
 
     @GetMapping("/{id}")
