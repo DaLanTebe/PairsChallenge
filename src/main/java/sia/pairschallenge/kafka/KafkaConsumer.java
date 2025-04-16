@@ -11,15 +11,15 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import sia.pairschallenge.repository.Product;
 
 import java.util.Map;
 
 @EnableKafka
 @Configuration
-public class KafkaConsumerConfig {
+public class KafkaConsumer {
 
-    @Value("${spring.kafka.producer.bootstrap-servers}")
-    private String bootstrapAddress;
+    private String bootstrapAddress = "localhost:9092";;
 
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
