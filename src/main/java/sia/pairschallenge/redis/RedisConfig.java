@@ -2,57 +2,29 @@ package sia.pairschallenge.redis;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
-import org.springframework.data.redis.serializer.GenericToStringSerializer;
-import sia.pairschallenge.redis.impl.RedisMessagePublisherImpl;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import sia.pairschallenge.repository.Product;
 
 @Configuration
+@EnableRedisRepositories
 public class RedisConfig {
+
     @Bean
-    JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory();
+    LettuceConnectionFactory lettuceConnectionFactory() {
+        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration("localhost", 6379);
+        return new LettuceConnectionFactory(configuration);
     }
 
     @Bean
-    public RedisTemplate<String, Product> redisTemplate(RedisConnectionFactory connectionFactory) {
+    public RedisTemplate<String, Product> redisTemplate(LettuceConnectionFactory connectionFactory) {
         final RedisTemplate<String, Product> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
-        template.setValueSerializer(new GenericToStringSerializer<Product>(Product.class));
+        Jackson2JsonRedisSerializer<Product> serializer = new Jackson2JsonRedisSerializer<>(Product.class);
+        template.setValueSerializer(serializer);
         return template;
-    }
-
-    @Bean
-    MessageSubscriber messageSubscriber() {
-        return new MessageSubscriber();
-    }
-
-//    @Bean
-//    RedisMessageListenerContainer redisContainer() {
-//        final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-//        container.setConnectionFactory(jedisConnectionFactory());
-//        container.addMessageListener(messageListener(), channelTopic());
-//        return container;
-//    }
-//
-//    @Bean
-//    MessageListener messageListener() {
-//        return new MessageListenerAdapter(messageSubscriber());
-//    }
-
-    @Bean
-    ChannelTopic channelTopic() {
-        return new ChannelTopic("pubsub:queue");
-    }
-
-    @Bean
-    RedisMessagePublisherImpl redisMessagePublisher() {
-        return new RedisMessagePublisherImpl(redisTemplate(jedisConnectionFactory()), channelTopic());
     }
 }

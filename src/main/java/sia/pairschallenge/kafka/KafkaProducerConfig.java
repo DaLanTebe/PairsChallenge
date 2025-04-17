@@ -15,15 +15,15 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    private String bootstrapAddress = "localhost:9092";
+    private String bootstrapAddress = "localhost:9094";
 
     @Bean
-    public ProducerFactory<String, Product> producerFactory() {
+    public ProducerFactory<String, String> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, Product> kafkaTemplate() {
+    public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

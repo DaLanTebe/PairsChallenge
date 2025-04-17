@@ -1,10 +1,8 @@
 package sia.pairschallenge.repository;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -14,7 +12,7 @@ import java.time.LocalDateTime;
  */
 
 @Entity
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue
@@ -104,5 +102,18 @@ public class Product {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
