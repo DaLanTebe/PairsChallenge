@@ -25,10 +25,6 @@ services:
       - '6379:6379'
     volumes:
       - ./redis-data:/data
-      - /Users/danaradaev/IdeaProjects/PairsChallenge/redis.conf
-    command: redis-server --requirepass your_secure_password
-    environment:
-      - REDIS_PASSWORD=secret
 
   kafka:
     image: confluentinc/cp-kafka:latest

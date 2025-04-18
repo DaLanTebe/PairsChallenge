@@ -9,6 +9,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import sia.pairschallenge.repository.Product;
+import sia.pairschallenge.service.event.ProductEvent;
 
 import java.util.Map;
 
@@ -18,12 +19,12 @@ public class KafkaProducerConfig {
     private String bootstrapAddress = "localhost:9094";
 
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, ProductEvent> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate() {
+    public KafkaTemplate<String, ProductEvent> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
