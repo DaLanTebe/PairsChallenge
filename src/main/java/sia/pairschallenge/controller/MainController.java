@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 
 import org.apache.logging.log4j.Logger;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -23,20 +24,16 @@ public class MainController {
 
     private final Logger log = LogManager.getLogger(MainController.class);
 
-
-//    private final RedisService redisService;
-
     private final ProductServiceImpl productService;
 
     public MainController(ProductServiceImpl productService) {
         this.productService = productService;
-//        this.redisService = redisService;
+
     }
 
     @PostMapping
-    public ResponseEntity<String> createNewProduct(@RequestBody Product product) {
+    public void createNewProduct(@RequestBody Product product) {
         productService.create(product);
-        return ResponseEntity.ok("new product created");
     }
 
     @GetMapping("/{id}")
@@ -51,19 +48,14 @@ public class MainController {
     }
 
     @GetMapping
-    public void getProducts() {
-        String message = "";
-        try {
-            List<Product> allProducts = productService.findAll();
-            message = new ObjectMapper().writeValueAsString(allProducts);
-        } catch (JsonProcessingException e) {
-            log.error("Unable to cast object to json" + e);
-        }
+    public ResponseEntity<String> getProducts(@RequestParam() Integer page, @RequestParam Integer size) {
+        List<Product> allProducts = productService.findAll(PageRequest.of(page, size));
+        return ResponseEntity.ok(allProducts.toString());
     }
 
-    @PutMapping
-    public void updateProduct() {
-        productService.update(new Product());
+    @PutMapping("/{id}")
+    public void updateProduct(@PathVariable Integer id, @RequestBody Product product) {
+        productService.update(id, product);
     }
 
     @DeleteMapping("/{id}")

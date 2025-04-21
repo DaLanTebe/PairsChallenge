@@ -1,8 +1,7 @@
 package sia.pairschallenge.service.event;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import sia.pairschallenge.repository.Product;
 
 import java.io.Serializable;
@@ -21,8 +20,10 @@ public class ProductEvent implements Serializable{
 
         private Integer quantity;
 
+        @CreationTimestamp
         private LocalDateTime createdAt;
 
+        @UpdateTimestamp
         private LocalDateTime updatedAt;
 
         private String message;

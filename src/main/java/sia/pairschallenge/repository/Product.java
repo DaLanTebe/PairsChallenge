@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class Product implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
@@ -34,10 +34,12 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private Integer quantity;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     public Product(int id, String name, String description, BigDecimal price, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -47,6 +49,10 @@ public class Product implements Serializable {
         this.price = price;
         this.quantity = quantity;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Product(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
