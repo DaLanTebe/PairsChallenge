@@ -25,7 +25,6 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @CacheConfig(cacheNames = "productCache")
-@EntityListeners(EntityListeners.class)
 public class ProductServiceImpl implements ProductService {
 
     private static final Logger log = LogManager.getLogger(ProductServiceImpl.class);
@@ -47,9 +46,10 @@ public class ProductServiceImpl implements ProductService {
         if(productFromMainDB != null) {
             product.setId(id);
             product.setCreatedAt(productFromMainDB.getCreatedAt());
+
             productRepository.save(product);
 
-            product.setUpdatedAt(productRepository.findById(id).orElse(new Product(LocalDateTime.now())).getUpdatedAt());
+            product.setUpdatedAt(productRepository.findById(id).get().getUpdatedAt());
 
             CompletableFuture<SendResult<String, ProductEvent>> send =
                     kafkaTemplate.send("product-events", ProductEvent.from(product, "product updated"));

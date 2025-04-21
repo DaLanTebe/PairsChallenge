@@ -1,7 +1,5 @@
 package sia.pairschallenge.repository;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,7 +14,7 @@ import java.time.LocalDateTime;
  */
 
 @Entity
-public class Product implements Serializable {
+public class Product implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
