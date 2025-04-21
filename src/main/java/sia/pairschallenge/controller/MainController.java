@@ -1,19 +1,11 @@
 package sia.pairschallenge.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.apache.logging.log4j.LogManager;
-
 import org.apache.logging.log4j.Logger;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
-//import sia.pairschallenge.redis.RedisService;
 import sia.pairschallenge.repository.Product;
-//import sia.pairschallenge.redis.RedisService;
 import sia.pairschallenge.service.impl.ProductServiceImpl;
 
 import java.util.List;

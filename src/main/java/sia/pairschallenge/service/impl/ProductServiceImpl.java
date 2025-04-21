@@ -1,6 +1,5 @@
 package sia.pairschallenge.service.impl;
 
-import jakarta.persistence.EntityListeners;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import sia.pairschallenge.repository.Product;
 import sia.pairschallenge.repository.ProductRepository;
 import sia.pairschallenge.service.ProductService;
 import sia.pairschallenge.service.event.ProductEvent;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
