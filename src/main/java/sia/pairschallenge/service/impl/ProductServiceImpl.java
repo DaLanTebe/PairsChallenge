@@ -43,12 +43,10 @@ public class ProductServiceImpl implements ProductService {
             product.setId(id);
             product.setCreatedAt(productFromMainDB.getCreatedAt());
 
-            productRepository.save(product);
-
-            product.setUpdatedAt(productRepository.findById(id).get().getUpdatedAt());
+            Product savedProduct = productRepository.save(product);
 
             CompletableFuture<SendResult<String, ProductEvent>> send =
-                    kafkaTemplate.send("product-events", ProductEvent.from(product, "product updated"));
+                    kafkaTemplate.send("product-events", ProductEvent.from(savedProduct, "product updated"));
             send.whenComplete((result, exception) -> {
                 if (exception != null) {
                     log.error("message failed to send", exception);
