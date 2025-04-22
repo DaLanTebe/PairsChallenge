@@ -40,7 +40,7 @@ public class ProductEvent implements Serializable{
                 quantity = product.getQuantity();
                 createdAt = product.getCreatedAt();
                 updatedAt = product.getUpdatedAt();
-                this.message = message;
+                this.message = message + " Message Time: " + LocalDateTime.now();
         }
 
         public int getId() {
