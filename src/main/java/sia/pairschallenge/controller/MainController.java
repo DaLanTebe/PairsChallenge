@@ -24,8 +24,9 @@ public class MainController {
     }
 
     @PostMapping
-    public void createNewProduct(@RequestBody Product product) {
+    public ResponseEntity<String> createNewProduct(@RequestBody Product product) {
         productService.create(product);
+        return ResponseEntity.ok("Product created");
     }
 
     @GetMapping("/{id}")
@@ -46,13 +47,15 @@ public class MainController {
     }
 
     @PutMapping("/{id}")
-    public void updateProduct(@PathVariable Integer id, @RequestBody Product product) {
+    public ResponseEntity<String> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
         productService.update(id, product);
+        return ResponseEntity.ok("Product updated");
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct() {
+    public ResponseEntity<String> deleteProduct() {
         productService.deleteById(6);
+        return ResponseEntity.ok("Product deleted");
     }
 
 }

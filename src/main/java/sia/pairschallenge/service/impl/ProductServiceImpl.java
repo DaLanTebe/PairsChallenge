@@ -1,5 +1,6 @@
 package sia.pairschallenge.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @CachePut(key = "#product.id")
     public void update(Integer id, Product product) {
-        Product productFromMainDB = productRepository.findById(id).orElse(null);
+        Product productFromMainDB = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-        if(productFromMainDB != null) {
             product.setId(id);
             product.setCreatedAt(productFromMainDB.getCreatedAt());
 
@@ -52,21 +52,19 @@ public class ProductServiceImpl implements ProductService {
                     log.error("message failed to send", exception);
                 }
             });
-        }
     }
 
     @Override
     @Cacheable(key = "#id")
     public Product findById(Integer id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
     }
 
     @Override
     @CacheEvict(key = "#id")
     public void deleteById(Integer id) {
-        Product productForDelete = productRepository.findById(id).orElse(null);
+        Product productForDelete = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-        if (productForDelete != null) {
             productRepository.deleteById(id);
 
             CompletableFuture<SendResult<String, ProductEvent>> send =
@@ -76,7 +74,6 @@ public class ProductServiceImpl implements ProductService {
                     log.error("message failed to send", exception);
                 }
             });
-        }
     }
 
     @Override
